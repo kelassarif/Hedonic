@@ -19,14 +19,4 @@ shopping_mall_A1 <- google_places(
 
 df_shopping_mallA1 <- as.data.frame(shopping_mall_A1$results)
 
-#Create dataframe =====================================================
-#Amatan A page 1
-df_have_shopping_mallA1_name <- as.data.frame(place_name(shopping_mall_A1))
-df_have_shopping_mallA1_location <- as.data.frame(place_location(shopping_mall_A1))
-
-sm_Amat_A_1 <- cbind(df_have_shopping_mallA1_location,df_have_shopping_mallA1_name)
-
-#Write CSV
-write.csv(sm_Amat_A_1, "shopping_mallA1.csv")
-
 #End
