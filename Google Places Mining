@@ -1,0 +1,32 @@
+## RQuery by David Cooley https://www.rdocumentation.org/collaborators/name/David%20Cooley:
+## Edited by Sariffuddin
+## shopping_mall
+
+library(googleway)
+
+api_key <- 'Google API'
+
+##### TITIK AMATAN A: -6.875703, 109.673124 #####
+#Page 1 =====================================================
+
+## search for a specific place type
+shopping_mall_A1 <- google_places(
+  location = c(-6.875703, 109.673124),
+  place_type = "shopping_mall",
+  radius = 20000,
+  key = api_key
+)
+
+df_shopping_mallA1 <- as.data.frame(shopping_mall_A1$results)
+
+#Create dataframe =====================================================
+#Amatan A page 1
+df_have_shopping_mallA1_name <- as.data.frame(place_name(shopping_mall_A1))
+df_have_shopping_mallA1_location <- as.data.frame(place_location(shopping_mall_A1))
+
+sm_Amat_A_1 <- cbind(df_have_shopping_mallA1_location,df_have_shopping_mallA1_name)
+
+#Write CSV
+write.csv(sm_Amat_A_1, "shopping_mallA1.csv")
+
+#End
