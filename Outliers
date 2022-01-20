@@ -1,0 +1,36 @@
+library(tidyverse)
+library(xlsx)
+library(reshape2)
+library(covreg)
+library(plotly)
+library(ggstatsplot)
+
+#================================== PLOTLY ==================================
+
+#Remove Outliers
+#Reference: https://www.r-bloggers.com/2020/01/how-to-remove-outliers-in-r/
+
+Q <- quantile(masterdata$Prop_Price, probs = c(.25, .75), na.rm = FALSE)
+IQR <- IQR(masterdata$Prop_Price)
+up <- Q[2]+1.5*IQR #Upper range
+low <- Q[1]-1.5*IQR #Lower Range
+eliminated<- subset(masterdata, masterdata$Prop_Price > (Q[1] - 1.5*IQR) & masterdata$Prop_Price < (Q[2]+1.5*IQR))
+
+dataeliminated <- data.frame(eliminated)
+
+mean(masterdata$Land_price) #Mean
+max(masterdata$Land_price) #Modus
+min(masterdata$Land_price) #Modus
+median(masterdata$Land_price) #Median
+sd(masterdata$Land_price) #Standard Deviation
+
+
+#Eliminating outliers
+boxplot(Land_PriceK ~ Flooded, data = dataeliminated, ylab = "Land price x 1.000 (IDR)", names = c("Flooded", "Non Flooded"))
+
+BoxPlot <- plot_ly(masterdata, x = ~Fld_CHD, y = ~Land_PriceK, color = ~Flooded, type = "box")
+BoxPlot
+
+#Regression Model Flooded
+dataFLOODED <- data.frame(read_excel("masterdata.xlsx", sheet = "Flooded"))
+boxplot(Land_PriceK ~ Flooded, data = masterdata, ylab = "Land price x 1.000 (IDR)", names = c("Flooded", "Non Flooded"))
