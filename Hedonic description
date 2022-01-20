@@ -1,0 +1,233 @@
+library(ggplot2)
+library(scatterplot3d)
+library(tidyverse)
+library(dplyr)
+library(readxl)
+library(corrplot)
+
+DataViz <- read_excel("DataViz.xlsx")
+re_order <- c("<1000","1001-2000","2001-3000","3001-4000","4001-5000","5001-6000")
+
+#convert to factor with reorder levels
+#SD
+
+#check element unik/interval data
+unique(DataViz$cr_SD)
+
+#replace interval terkecil menjadi "<1000"
+DataViz$cr_SD[DataViz$cr_SD==1000] <- "<1000"
+
+#ubah format data char -> factor + reordering levelnya
+DataViz$cr_SD <- factor(DataViz$cr_SD, 
+                        levels = re_order
+)
+
+#1 Distance to Elementary School
+DataViz %>% 
+  ggplot(aes(x = cr_SD, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3", group = "Year") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to elementary school (meter)") + 
+  labs(title = 'Property Price and distance to Elementary School') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#SMP
+unique(DataViz$cr_SMP)
+DataViz$cr_SMP[DataViz$cr_SMP==1000] <- "<1000"
+DataViz$cr_SMP <- factor(DataViz$cr_SMP, 
+                         levels = re_order
+)
+
+#2 Distance to Junior High School
+DataViz %>% 
+  ggplot(aes(x = cr_SMP, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to junior high school (meter)") + 
+  labs(title = 'Property Price and distance to Junior High School') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#SMA
+unique(DataViz$cr_SMA)
+DataViz$cr_SMA[DataViz$cr_SMA==1000] <- "<1000"
+DataViz$cr_SMA <- factor(DataViz$cr_SMA, 
+                         levels = re_order
+)
+
+#3 Distance to Senior High School
+DataViz %>% 
+  ggplot(aes(x = cr_SMA, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to senior high school (meter)") + 
+  labs(title = 'Property Price and distance to Senior High School') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#UNIV
+unique(DataViz$cr_UNIV)
+DataViz$cr_UNIV[DataViz$cr_UNIV==1000] <- "<1000"
+DataViz$cr_UNIV <- factor(DataViz$cr_UNIV, 
+                          levels = append(re_order,c("6001-7000","7001-8000"))
+)
+
+#4 Distance to University
+DataViz %>% 
+  ggplot(aes(x = cr_UNIV, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to University (meter)") + 
+  labs(title = 'Property Price and distance to University') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#MART
+unique(DataViz$cr_MART)
+DataViz$cr_MART[DataViz$cr_MART==1000] <- "<1000"
+DataViz$cr_MART <- factor(DataViz$cr_MART, 
+                          levels = re_order
+)
+
+#5 Distance to Market
+DataViz %>% 
+  ggplot(aes(x = cr_MART, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to Market (meter)") + 
+  labs(title = 'Property Price and distance to Market') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#HSPT
+unique(DataViz$cr_HSPT)
+DataViz$cr_HSPT[DataViz$cr_HSPT==1000] <- "<1000"
+DataViz$cr_HSPT <- factor(DataViz$cr_HSPT, 
+                          levels = append(re_order,c("6001-7000"))
+)
+
+#6 Distance to Hospital
+DataViz %>% 
+  ggplot(aes(x = cr_HSPT, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to Hospital (meter)") + 
+  labs(title = 'Property Price and distance to Hospital') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#TRAIN
+unique(DataViz$cr_TRAIN)
+DataViz$cr_TRAIN[DataViz$cr_TRAIN==1000] <- "<1000"
+DataViz$cr_TRAIN <- factor(DataViz$cr_TRAIN, 
+                           levels = append(re_order,c("6001-7000","7001-8000","8001-9000","9001-10000"))
+)
+
+#6 Distance to Train Station
+DataViz %>% 
+  ggplot(aes(x = cr_TRAIN, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to Train Station (meter)") + 
+  labs(title = 'Property Price and distance to Train Station') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#BUS
+unique(DataViz$cr_BUS)
+DataViz$cr_BUS[DataViz$cr_BUS==1000] <- "<1000"
+DataViz$cr_BUS <- factor(DataViz$cr_BUS, 
+                         levels = append(re_order,c("6001-7000","7001-8000","8001-9000","9001-10000"))
+)
+
+#7 Distance to Bus Station
+DataViz %>% 
+  ggplot(aes(x = cr_BUS, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to Bus Station (meter)") + 
+  labs(title = 'Property Price and distance to Bus Station') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(fld_CHD ~.)
+theme_classic()
+
+#Mroad
+unique(DataViz$cr_Mroad)
+DataViz$cr_Mroad[DataViz$cr_Mroad==1000] <- "<1000"
+DataViz$cr_Mroad <- factor(DataViz$cr_Mroad, 
+                           levels = append(re_order,c("6001-7000","7001-8000"))
+)
+
+#7 Distance to Main Road
+DataViz %>% 
+  ggplot(aes(x = cr_Mroad, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", mult = 1) +
+  labs(x = "Distance to Main Road(meter)") + 
+  labs(title = 'Property Price and distance to Main Road') + 
+  labs(y = 'Property Price x 1000 (IDR)') + 
+  stat_smooth(method = "lm") +
+  guides(shape=FALSE) +
+  facet_grid(rows = vars(fld_CHD))
+theme_classic()
+
+#Sline
+#check element unik/interval data
+unique(DataViz$cr_Sline)
+
+#replace interval terkecil menjadi "<1000" dan ">10000"
+DataViz$cr_Sline[DataViz$cr_Sline==1000] <- "<1000"
+DataViz$cr_Sline[DataViz$cr_Sline==10001] <- ">10000"
+
+#ubah format data char -> factor + reordering levelnya
+DataViz$cr_Sline <- factor(DataViz$cr_Sline, 
+                           levels = append(re_order,c("6001-7000","7001-8000","8001-9000","9001-10000",">10000"))
+)
+
+#8 Distance to Shoreline
+DataViz %>% 
+  ggplot(aes(x = cr_Sline, y = Prop_Price/1000)) +
+  stat_summary(fun = "mean", geom = "bar", width = 0.7, fill="tan1", colour="sienna3") +
+  stat_summary(fun = "mean", geom = "line", group = 1, colour="red") +
+  stat_summary(fun = "mean", geom = "point", group = 1, colour="red") +
+  labs(x = "Distance to Shoreline (meter)") + 
+  labs(title = 'Property Price and distance to Shoreline') + 
+  labs(y = 'Property Price x 1000 (IDR)')+
+  facet_grid(rows = vars(fld_CHD))+
+  theme(plot.title = element_text(hjust = 0.5))
+
+#9 Corplot
+cor <- cor(COR_Residence)
+corrplot(cor, method="pie")
+
+corrplot(cor, type="upper", order="hclust", 
+         p.mat = p.mat, sig.level = 0.01)
+
+#10 BoxPlot
+ggplot(DataViz,aes(x=Year,y=Prop_PriceK,fill=Year, group = Year))+
+  geom_boxplot()+
+  facet_wrap(~fld_CHD)
