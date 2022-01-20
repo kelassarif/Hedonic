@@ -1,0 +1,28 @@
+library(googleway)
+
+key <- "Google API"
+
+df <- data.frame(lat = -6.8891515,
+                 lon = 109.6684349,
+                 info = "Kota Pekalongan")
+
+google_map(key = key, height = 600, search_box = T) %>%
+  add_markers(data = df, info_window = "info")
+
+## other available methods
+# add_markers
+# add_heatmap
+# add_circles
+# add_traffic
+# add_bicycling
+# add_transit
+
+google_streetview(location = c(-6.8891515, 109.6684349),
+                  size = c(400,400),
+                  panorama_id = NULL,
+                  output = "plot",
+                  heading = 90,
+                  fov = 90,
+                  pitch = 0,
+                  response_check = FALSE,
+                  key = key)
